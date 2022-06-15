@@ -93,3 +93,7 @@ skm sel
 ```
 
 This command use promptui, you need use ↑/↓ to select key.
+
+# Other
+
+When I finished it, I found a better [skm](https://github.com/TimothyYe/skm).
