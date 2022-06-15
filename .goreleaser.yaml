@@ -9,6 +9,7 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
+      - GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     dir: ./
     goos:
       - linux
