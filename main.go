@@ -1,7 +1,7 @@
 package main
 
-import "github/lovexy-fun/skm/cmd"
+import "github.com/lovexy-fun/skm/skm"
 
 func main() {
-	cmd.Execute()
+	skm.Run()
 }

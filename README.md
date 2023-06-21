@@ -1,99 +1,49 @@
-# SKM
+# SSH Key Manager
 
-> A ssh private key manager.
-
-# Download
-
-Please go to [release](https://github.com/lovexy-fun/skm/releases)
+| Command | Support |
+|---------|:-------:|
+| current |    ✔    |
+| cat     |    ✔    |
+| use     |    ✔    |
+| add     |    ✘    |
+| create  |    ✔    |
+| delete  |    ✔    |
+| list    |    ✔    |
+| dav     |    ✘    |
+| help    |    ✔    |
 
 # Usage
 
-Use `skm` to show the current key.
-
-input
+Input:
 
 ```shell
-skm
+skm h
 ```
 
-output
+Output:
 
 ```shell
-Effective key: testkey
+NAME:                                                           
+   skm - SSH Key Manager                                        
+                                                                
+USAGE:                                                          
+   skm [global options] command [command options] [arguments...]
+                                                                
+VERSION:                                                        
+   v1.0.0                                                       
+
+COMMANDS:
+   current, cur  Show current key name
+   cat           Output public key file contents to the console
+   use, u        Use a key
+   add, a        Add a key
+   create, c     Create a key
+   delete, del   Delete a key
+   list, ls      List all the keys
+   dav           WebDav Setting
+   help, h       Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h     show help
+   --version, -v  print the version
 ```
-
-Use `-h` for help
-
-input
-
-```shell
-skm -h
-```
-output
-
-```shell
-SSH key manager
-
-Usage:
-  skm [flags]
-  skm [command]
-
-Available Commands:
-  add         Add a key to manager
-  del         Delete a key from manager
-  help        Help about any command
-  ls          List all keys
-  sel         Choose a key to make it effective
-
-Flags:
-  -h, --help   help for skm
-
-Use "skm [command] --help" for more information about a command.
-```
-
-## add
-
-Add a ssh key to manager.
-
-For example:
-
-```shell
-skm add -f ./id_rsa -n testkey
-```
-
-## del
-
-Delete a ssh key from manager.
-
-For example:
-
-```shell
-skm del
-```
-
-This command use promptui, you need use ↑/↓ to select key.
-
-## ls
-
-List all keys.
-
-For example:
-```shell
-skm ls
-```
-
-## sel
-
-Select a key to make it effective.
-
-For example:
-
-```shell
-skm sel
-```
-
-This command use promptui, you need use ↑/↓ to select key.
-
-# Other
-
-When I finished it, I found a better [skm](https://github.com/TimothyYe/skm).
