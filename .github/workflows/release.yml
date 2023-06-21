@@ -14,7 +14,8 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v1
-
+    - name: Install GCC Multilib
+      run: sudo apt-get install -y gcc-multilib
     - name: Create release on GitHub
       uses: goreleaser/goreleaser-action@v2
       with:
