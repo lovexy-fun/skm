@@ -11,13 +11,9 @@ builds:
       - CGO_ENABLED=0
     dir: ./
     goos:
-      - linux
       - windows
-      - darwin
     goarch:
       - amd64
-      - arm
-      - arm64
     ldflags:
       - -s -w -X main.Version={{.Tag}}
 archives:
