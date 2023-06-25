@@ -5,7 +5,7 @@
 | current |    ✔    |
 | cat     |    ✔    |
 | use     |    ✔    |
-| add     |    ✘    |
+| add     |    ✔    |
 | create  |    ✔    |
 | delete  |    ✔    |
 | list    |    ✔    |
