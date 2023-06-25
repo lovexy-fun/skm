@@ -119,3 +119,16 @@ func deleteById(id string) error {
 	}
 	return nil
 }
+
+// setWebDAV 设置webdav配置
+func setWebDAV(webDAV WebDAV) error {
+	db, err := getDB()
+	if err != nil {
+		return err
+	}
+	result := db.Delete(&WebDAV{}, "1=1").Create(&webDAV)
+	if result.Error != nil {
+		return errors.New(fmt.Sprintf("Failed to set webdav. Reason: %s", result.Error.Error()))
+	}
+	return nil
+}

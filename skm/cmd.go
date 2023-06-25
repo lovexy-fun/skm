@@ -95,9 +95,43 @@ func initializeCommands() []*cli.Command {
 			Action:  list,
 		},
 		{
-			Name:   "dav",
-			Usage:  "WebDav Setting",
-			Action: dav,
+			Name:        "dav",
+			Usage:       "WebDav Setting",
+			Action:      dav,
+			Subcommands: webdavSubCommands(),
+		},
+	}
+	return commands
+}
+
+func webdavSubCommands() []*cli.Command {
+	commands := []*cli.Command{
+		{
+			Name:   "set",
+			Usage:  "Set url and username and password",
+			Action: davSet,
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:     "url",
+					Value:    "",
+					Usage:    "webdav server url",
+					Required: true,
+				},
+				&cli.StringFlag{
+					Name:     "username",
+					Aliases:  []string{"u"},
+					Value:    "",
+					Usage:    "webdav username",
+					Required: true,
+				},
+				&cli.StringFlag{
+					Name:     "password",
+					Aliases:  []string{"p"},
+					Value:    "",
+					Usage:    "webdav password",
+					Required: true,
+				},
+			},
 		},
 	}
 	return commands
@@ -437,5 +471,43 @@ func list(cCtx *cli.Context) error {
 func dav(cCtx *cli.Context) error {
 	// TODO
 	fmt.Println(promptui.Styler(promptui.FGYellow)("TODO"))
+	return nil
+}
+
+// davSet 设置url、username和password
+func davSet(cCtx *cli.Context) error {
+	url := cCtx.String("url")
+	username := cCtx.String("username")
+	password := cCtx.String("password")
+
+	//输入描述
+	prompt := promptui.Prompt{
+		Label: "Please enter password(It will not be saved):",
+		Templates: &promptui.PromptTemplates{
+			Valid:   "{{ . | blue }} ",
+			Invalid: "{{ . | blue }} ",
+		},
+		Mask:        '*',
+		HideEntered: true,
+	}
+
+	pw, err := prompt.Run()
+	if err != nil {
+		return err
+	}
+	encryptPassword, err := AES256Encrypt(password, pw)
+	if err != nil {
+		return err
+	}
+
+	err = setWebDAV(WebDAV{
+		Url:      url,
+		Username: username,
+		Password: encryptPassword,
+	})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
