@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/manifoldco/promptui"
 	"github.com/urfave/cli/v2"
+	"io"
 	"os"
 	"path/filepath"
 )
@@ -45,6 +46,35 @@ func initializeCommands() []*cli.Command {
 			Aliases: []string{"a"},
 			Usage:   "Add a key",
 			Action:  add,
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:     "name",
+					Aliases:  []string{"n"},
+					Value:    "",
+					Usage:    "key path",
+					Required: true,
+				},
+				&cli.StringFlag{
+					Name:    "description",
+					Aliases: []string{"d"},
+					Value:   "",
+					Usage:   "key description",
+				},
+				&cli.StringFlag{
+					Name:     "private",
+					Aliases:  []string{"pri"},
+					Value:    "",
+					Usage:    "private key path",
+					Required: true,
+				},
+				&cli.StringFlag{
+					Name:     "public",
+					Aliases:  []string{"pub"},
+					Value:    "",
+					Usage:    "public key path",
+					Required: true,
+				},
+			},
 		},
 		{
 			Name:    "create",
@@ -203,8 +233,48 @@ func use(cCtx *cli.Context) error {
 
 // add 添加一个密钥
 func add(cCtx *cli.Context) error {
-	// TODO
-	fmt.Println(promptui.Styler(promptui.FGYellow)("TODO"))
+	name := cCtx.String("name")
+	desc := cCtx.String("description")
+	pri := cCtx.String("private")
+	pub := cCtx.String("public")
+
+	priFile, err := os.Open(pri)
+	if os.IsNotExist(err) {
+		return errors.New(fmt.Sprintf("%s is not exist", pri))
+	}
+	if err != nil {
+		return errors.New(fmt.Sprintf("Failed to open %s. ", pri))
+	}
+	defer priFile.Close()
+	priBytes, err := io.ReadAll(priFile)
+	if err != nil {
+		return errors.New(fmt.Sprintf("Failed to read %s. ", pri))
+	}
+
+	pubFile, err := os.Open(pub)
+	if os.IsNotExist(err) {
+		return errors.New(fmt.Sprintf("%s is not exist", pub))
+	}
+	if err != nil {
+		return errors.New(fmt.Sprintf("Failed to open %s. ", pub))
+	}
+	defer pubFile.Close()
+	pubBytes, err := io.ReadAll(pubFile)
+	if err != nil {
+		return errors.New(fmt.Sprintf("Failed to read %s. ", pub))
+	}
+
+	err = save(Key{
+		Id:             uuid.New().String(),
+		Name:           name,
+		Description:    desc,
+		PrivateKeyFile: priBytes,
+		PublicKeyFile:  pubBytes,
+	})
+	if err != nil {
+		errors.New("Failed to add key. ")
+	}
+
 	return nil
 }
 
